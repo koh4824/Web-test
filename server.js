@@ -46,6 +46,6 @@ io.on('connection', (socket) => {
 
 // 5. 서버 시작 (콘솔 메시지 업데이트)
 server.listen(PORT, () => {
-    console.log(`✨ 중앙 서버가 http://localhost:${PORT} 에서 실행 중입니다.`);
-    console.log(`[페이지 이동] 테스트 주소: http://localhost:${PORT}/goto/1 (1, 2, 3, 4로 변경 가능)`);
+    console.log(`✨ 중앙 서버가 http://192.168.10.11:${PORT} 에서 실행 중입니다.`);
+    console.log(`[페이지 이동] 테스트 주소: http://192.168.10.11:${PORT}/goto/1 (1, 2, 3, 4로 변경 가능)`);
 });
