@@ -18,7 +18,7 @@ const io = socketIo(server, {
     }
 });
 
-// 3. Socket.IO (실시간 통신) 로직
+// 4. Socket.IO (실시간 통신) 로직
 io.on('connection', (socket) => {
     console.log('새로운 슬라이드 쇼 기기가 연결되었습니다.');
 
@@ -26,22 +26,26 @@ io.on('connection', (socket) => {
         console.log('기기 연결이 끊어졌습니다.');
     });
 
-    // 4. 신호를 보낼 수 있는 HTTP 엔드포인트(URL) 설정
-    // 이 URL로 접속하면 모든 연결된 클라이언트에게 신호를 보냅니다.
-    app.get('/command/:direction', (req, res) => {
-        const direction = req.params.direction;
-        
-        // 'next' 또는 'prev' 신호를 모든 클라이언트에게 전송
-        io.emit('slide-command', direction); 
-        
-        console.log(`[COMMAND] 신호 수신: ${direction} -> 모든 클라이언트에게 전송`);
-        res.send(`Command '${direction}' sent to all clients. Please refresh this page if it doesn't automatically.`);
+    // **새로운 명령 경로 설정: /goto/:slideNumber**
+    // 예: http://192.168.10.11:3000/goto/3 에 접속하면 3번 슬라이드로 이동 명령
+    app.get('/goto/:slideNumber', (req, res) => {
+        const slideNumber = parseInt(req.params.slideNumber); // 문자열을 숫자로 변환
+
+        // 숫자가 유효한 범위(1~4)인지 확인하는 간단한 검증
+        if (slideNumber >= 1 && slideNumber <= 4) {
+            // 연결된 모든 슬라이드 쇼 클라이언트에게 신호를 전송
+            io.emit('slide-command', { action: 'goto', index: slideNumber });
+            
+            console.log(`[COMMAND] 신호 수신: ${slideNumber}번 슬라이드 -> 모든 클라이언트에게 전송`);
+            res.send(`Command 'Goto Slide ${slideNumber}' sent to all clients.`);
+        } else {
+             res.status(400).send("Invalid slide number. Use 1, 2, 3, or 4.");
+        }
     });
 });
 
-// 5. 서버 시작
+// 5. 서버 시작 (콘솔 메시지 업데이트)
 server.listen(PORT, () => {
     console.log(`✨ 중앙 서버가 http://localhost:${PORT} 에서 실행 중입니다.`);
-    console.log(`[다음] 신호 테스트 주소: http://localhost:${PORT}/command/next`);
-    console.log(`[이전] 신호 테스트 주소: http://localhost:${PORT}/command/prev`);
+    console.log(`[페이지 이동] 테스트 주소: http://localhost:${PORT}/goto/1 (1, 2, 3, 4로 변경 가능)`);
 });
