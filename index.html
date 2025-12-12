@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+    <title>실시간 제어 이미지 슬라이더</title>
+    <link rel="stylesheet" href="style.css">
+    
+    <script src="https://cdn.socket.io/4.7.4/socket.io.min.js"></script>
+</head>
+<body>
+
+    <div class="slider-container">
+        <div class="slide current" data-slide-index="1">
+            <img src="pic1.jpg" alt="이미지 1">
+        </div>
+        <div class="slide" data-slide-index="2">
+            <img src="pic2.jpg" alt="이미지 2">
+        </div>
+        <div class="slide" data-slide-index="3">
+            <img src="pic3.jpg" alt="이미지 3">
+        </div>
+        <div class="slide" data-slide-index="4">
+            <img src="pic4.jpg" alt="이미지 4">
+        </div>
+    </div>
+    
+    <script src="script.js"></script>
+</body>
+</html>
